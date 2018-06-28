@@ -1,11 +1,16 @@
 package com.fjdantas.cscmcourse.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity //jpa entity class
 public class Category implements Serializable{ //class conversion in byte sequence
@@ -17,6 +22,15 @@ public class Category implements Serializable{ //class conversion in byte sequen
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	private Integer id;
 	private String name;
+	
+	/*
+	 * treating cyclic reference with annotation @JsonManagedReference fetching the objects
+	 * creating the many-to-many relationship between the product and category tables _
+	 * using the mapping done in the categories attribute into Product class
+	 */
+	@JsonManagedReference
+	@ManyToMany(mappedBy="categories")
+	private List<Product> products = new ArrayList<>();
 	
 	//constructors of the class
 	public Category() {
@@ -46,6 +60,14 @@ public class Category implements Serializable{ //class conversion in byte sequen
 		this.name = name;
 	}
 	
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+	
 	//method hashcode for generate number code for each object
 	@Override
 	public int hashCode() {
@@ -72,6 +94,6 @@ public class Category implements Serializable{ //class conversion in byte sequen
 			return false;
 		return true;
 	}	
-
+	
 }
 	
