@@ -49,6 +49,9 @@ public class Client implements Serializable{ //class conversion in byte sequence
 	@ElementCollection
 	@CollectionTable(name="TELEPHONE")
 	private Set<String> telephone = new HashSet<>();
+	
+	@OneToMany(mappedBy="client")	
+	private List<PurchaseOrder> PurchaseOrders = new ArrayList<>();
 
 	public Client() {
 
@@ -120,6 +123,14 @@ public class Client implements Serializable{ //class conversion in byte sequence
 		this.telephone = telephone;
 	}
 
+	public List<PurchaseOrder> getOrders() {
+		return PurchaseOrders;
+	}
+
+	public void setOrders(List<PurchaseOrder> PurchaseOrders) {
+		this.PurchaseOrders = PurchaseOrders;
+	}	
+	
 	//method equals for comparing objects by content
 	@Override
 	public int hashCode() {
@@ -145,6 +156,6 @@ public class Client implements Serializable{ //class conversion in byte sequence
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
 	
 }
