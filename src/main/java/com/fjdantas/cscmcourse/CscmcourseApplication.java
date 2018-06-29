@@ -7,12 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.fjdantas.cscmcourse.domain.Address;
 import com.fjdantas.cscmcourse.domain.Category;
 import com.fjdantas.cscmcourse.domain.City;
+import com.fjdantas.cscmcourse.domain.Client;
 import com.fjdantas.cscmcourse.domain.Product;
 import com.fjdantas.cscmcourse.domain.State;
+import com.fjdantas.cscmcourse.domain.enums.TypeClient;
+import com.fjdantas.cscmcourse.repositories.AddressRepository;
 import com.fjdantas.cscmcourse.repositories.CategoryRepository;
 import com.fjdantas.cscmcourse.repositories.CityRepository;
+import com.fjdantas.cscmcourse.repositories.ClientRepository;
 import com.fjdantas.cscmcourse.repositories.ProductRepository;
 import com.fjdantas.cscmcourse.repositories.StateRepository;
 
@@ -36,6 +41,12 @@ public class CscmcourseApplication implements CommandLineRunner{
 	
 	@Autowired
 	private CityRepository cityRepository;
+	
+	@Autowired
+	private ClientRepository clientRepository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CscmcourseApplication.class, args);
@@ -90,6 +101,25 @@ public class CscmcourseApplication implements CommandLineRunner{
 		
 		//saving a City object list in the database with a auto list into saveAll method
 		cityRepository.saveAll(Arrays.asList(cit1, cit2, cit3));
+		
+		//instantiating of the objects of Client
+		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", TypeClient.PHYSICALPERSON);
+		
+		//associating the clients elements with your telephones list
+		cli1.getTelephone().addAll(Arrays.asList("27363323", "93838393"));
+		
+		//instantiating of the objects of Address
+		Address ed1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, cit1);
+		Address ed2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, cit2);
+	
+		//associating the clients elements with your address list
+		cli1.getAddress().addAll(Arrays.asList(ed1, ed2));
+		
+		//saving a Client object list in the database with a auto list into saveAll method
+		clientRepository.saveAll(Arrays.asList(cli1));
+		
+		//saving a Address object list in the database with a auto list into saveAll method
+		addressRepository.saveAll(Arrays.asList(ed1, ed2));
 		
 	}
 }
