@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fjdantas.cscmcourse.domain.enums.TypeClient;
 
 @Entity
@@ -35,8 +36,10 @@ public class Client implements Serializable{ //class conversion in byte sequence
 	private Integer type; 
 	
 	/*
-	 * association between Address and Client 
+	 * association between Address and Client when the objet Client can serialized your Addresses
+	 * controller of the cyclic reference
 	 */	
+	@JsonManagedReference
 	@OneToMany(mappedBy="client")
 	private List<Address> address = new ArrayList<>();
 	

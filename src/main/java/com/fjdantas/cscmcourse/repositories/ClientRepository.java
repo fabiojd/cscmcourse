@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.fjdantas.cscmcourse.domain.Client;
 
 /*
- * ClietRepoitory Interface annotation by JpaRepository
+ * ClientRepoitory Interface annotation by JpaRepository
  * interface of operation of data access by object type with id attribute for repository layer
  */
 
