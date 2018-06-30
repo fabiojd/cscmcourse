@@ -2,7 +2,9 @@ package com.fjdantas.cscmcourse.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -40,9 +43,16 @@ public class Product implements Serializable{ //class conversion in byte sequenc
 		joinColumns = @JoinColumn(name="product_id"), 
 		inverseJoinColumns = @JoinColumn(name="category_id") //foreign keys to many-to-many relationship
 	)
+	
 	private List<Category> categories = new ArrayList<>();
 	
-	//constructors of the class
+	/*
+	 * controlling the duplicity of items in the same order
+	 * mapping by id that is the auxiliary object that has the reference of the Product
+	 */
+	@OneToMany(mappedBy="id.product")
+	private Set<OrderItem> items = new HashSet<>();
+	
 	public Product() {
 		
 	}
@@ -53,6 +63,17 @@ public class Product implements Serializable{ //class conversion in byte sequenc
 		this.id = id;
 		this.name = name;
 		this.price = price;
+	}
+	
+	/*
+	 * adding into list object all the orders related to each item in the OrderItem list
+	 */
+	public List<PurchaseOrder> getPurchaseOrder() {
+		List<PurchaseOrder> list = new ArrayList<>();
+		for(OrderItem x : items) {
+			list.add(x.getPurchaseOrder());
+		}
+		return list;		
 	}
 	
 	//getters and setters
@@ -87,6 +108,14 @@ public class Product implements Serializable{ //class conversion in byte sequenc
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
 	}
+	
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
+	}
 
 	//methods hashcode for generate number code for each object
 	@Override
@@ -113,7 +142,6 @@ public class Product implements Serializable{ //class conversion in byte sequenc
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-	
+	}	
 	
 }

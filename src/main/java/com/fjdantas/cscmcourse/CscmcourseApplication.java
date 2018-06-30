@@ -12,6 +12,7 @@ import com.fjdantas.cscmcourse.domain.Address;
 import com.fjdantas.cscmcourse.domain.Category;
 import com.fjdantas.cscmcourse.domain.City;
 import com.fjdantas.cscmcourse.domain.Client;
+import com.fjdantas.cscmcourse.domain.OrderItem;
 import com.fjdantas.cscmcourse.domain.Payment;
 import com.fjdantas.cscmcourse.domain.PaymentWithCard;
 import com.fjdantas.cscmcourse.domain.PaymentWithTicket;
@@ -24,6 +25,7 @@ import com.fjdantas.cscmcourse.repositories.AddressRepository;
 import com.fjdantas.cscmcourse.repositories.CategoryRepository;
 import com.fjdantas.cscmcourse.repositories.CityRepository;
 import com.fjdantas.cscmcourse.repositories.ClientRepository;
+import com.fjdantas.cscmcourse.repositories.OrderItemRepository;
 import com.fjdantas.cscmcourse.repositories.PaymentRepository;
 import com.fjdantas.cscmcourse.repositories.ProductRepository;
 import com.fjdantas.cscmcourse.repositories.PurchaseOrderRepository;
@@ -54,6 +56,8 @@ public class CscmcourseApplication implements CommandLineRunner{
 	private PurchaseOrderRepository purchaseOrderRepository;	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CscmcourseApplication.class, args);
@@ -128,5 +132,18 @@ public class CscmcourseApplication implements CommandLineRunner{
 		
 		purchaseOrderRepository.saveAll(Arrays.asList(po1, po2));		
 		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+		
+		OrderItem oi1 = new OrderItem(po1, p1, 0.00, 1, 2000.00);
+		OrderItem oi2 = new OrderItem(po1, p3, 0.00, 2, 80.00);
+		OrderItem oi3 = new OrderItem(po2, p2, 100.00, 1, 800.00);
+		
+		po1.getItems().addAll(Arrays.asList(oi1, oi2));
+		po2.getItems().addAll(Arrays.asList(oi3));
+		
+		p1.getItems().addAll(Arrays.asList(oi1));
+		p2.getItems().addAll(Arrays.asList(oi3));
+		p3.getItems().addAll(Arrays.asList(oi2));
+		
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3));
 	}
 }

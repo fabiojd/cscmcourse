@@ -2,6 +2,8 @@ package com.fjdantas.cscmcourse.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -37,6 +40,13 @@ public class PurchaseOrder implements Serializable{ //class conversion in byte s
 	@ManyToOne
 	@JoinColumn(name="delivery_address_id")
 	private Address deliveryAddress;
+	
+	/*
+	 * controlling the duplicity of items in the same order
+	 * mapping by id that is the auxiliary object that has the reference of the purchaseOrder
+	 */
+	@OneToMany(mappedBy="id.purchaseOrder")
+	private Set<OrderItem> items = new HashSet<>();
 	
 	public PurchaseOrder() {
 		
@@ -88,6 +98,14 @@ public class PurchaseOrder implements Serializable{ //class conversion in byte s
 
 	public void setDeliveryAddress(Address deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
+	}
+	
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
 	}
 
 	@Override
