@@ -24,7 +24,7 @@ public class State implements Serializable{ //class conversion in byte sequence
 	private String name;
 	
 	/*
-	 * association between City and State when the objet City can serialized your State
+	 * association between City and State when the object City can serialized your State
 	 * not controller of the cyclic reference
 	 */	
 	@JsonBackReference

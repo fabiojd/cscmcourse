@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity //jpa entity class
 public class Product implements Serializable{ //class conversion in byte sequence
@@ -42,14 +43,15 @@ public class Product implements Serializable{ //class conversion in byte sequenc
 	@JoinTable(name="PRODUCT_CATEGORY", 
 		joinColumns = @JoinColumn(name="product_id"), 
 		inverseJoinColumns = @JoinColumn(name="category_id") //foreign keys to many-to-many relationship
-	)
-	
+	)	
 	private List<Category> categories = new ArrayList<>();
 	
 	/*
+	 * @JsonIgnore annotation will avoid serializing the collection
 	 * controlling the duplicity of items in the same order
 	 * mapping by id that is the auxiliary object that has the reference of the Product
 	 */
+	@JsonIgnore
 	@OneToMany(mappedBy="id.product")
 	private Set<OrderItem> items = new HashSet<>();
 	
@@ -66,12 +68,13 @@ public class Product implements Serializable{ //class conversion in byte sequenc
 	}
 	
 	/*
-	 * adding into list object all the orders related to each item in the OrderItem list
+	 * adding into list object all the purchases related to each item in the OrderItem list
 	 */
-	public List<PurchaseOrder> getPurchaseOrder() {
-		List<PurchaseOrder> list = new ArrayList<>();
+	@JsonIgnore
+	public List<Purchase> getPurchases() {
+		List<Purchase> list = new ArrayList<>();
 		for(OrderItem x : items) {
-			list.add(x.getPurchaseOrder());
+			list.add(x.getPurchase());
 		}
 		return list;		
 	}

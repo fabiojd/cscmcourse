@@ -15,8 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
-public class PurchaseOrder implements Serializable{ //class conversion in byte sequence
+public class Purchase implements Serializable{ //class conversion in byte sequence
 	//generating class version
 	private static final long serialVersionUID = 1L;
 	
@@ -24,15 +27,20 @@ public class PurchaseOrder implements Serializable{ //class conversion in byte s
 	@Id //auto id generation strategy definition with IDENTITY
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
+	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm", timezone="America/Sao_Paulo")
 	private Date instant;
 	
 	/*
+	 * treating cyclic reference with annotation @JsonManagedReference fetching the objects
 	 * controlling the transient entity with CascadeType.ALL 
 	 * and indicating the mapping in the another table with mappedBy
 	 */
-	@OneToOne(cascade=CascadeType.ALL, mappedBy="PurchaseOrder")
+	@JsonManagedReference
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="purchase")
 	private Payment payment;
 	
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="client_id")
 	private Client client;
@@ -42,17 +50,17 @@ public class PurchaseOrder implements Serializable{ //class conversion in byte s
 	private Address deliveryAddress;
 	
 	/*
-	 * controlling the duplicity of items in the same order
-	 * mapping by id that is the auxiliary object that has the reference of the purchaseOrder
+	 * controlling the duplicity of items in the same order and performing the serialization
+	 * mapping by id that is the auxiliary object that has the reference of the purchase
 	 */
-	@OneToMany(mappedBy="id.purchaseOrder")
+	@OneToMany(mappedBy="id.purchase")
 	private Set<OrderItem> items = new HashSet<>();
 	
-	public PurchaseOrder() {
+	public Purchase() {
 		
 	}
 
-	public PurchaseOrder(Integer id, Date instant, Client client, Address deliveryAddress) {
+	public Purchase(Integer id, Date instant, Client client, Address deliveryAddress) {
 		super();
 		this.id = id;
 		this.instant = instant;
@@ -124,7 +132,7 @@ public class PurchaseOrder implements Serializable{ //class conversion in byte s
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PurchaseOrder other = (PurchaseOrder) obj;
+		Purchase other = (Purchase) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

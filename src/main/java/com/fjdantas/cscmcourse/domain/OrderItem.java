@@ -5,14 +5,18 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class OrderItem implements Serializable{ //class conversion in byte sequence
 	//generating class version
 	private static final long serialVersionUID = 1L;
 	
 	/*
+	 * @JsonIgnore to not serialize composite key by having two levels of access
 	 * id attribute embedded in an auxiliary type
 	 */
+	@JsonIgnore
 	@EmbeddedId
 	private OrderItemPK id = new OrderItemPK();
 	
@@ -25,19 +29,20 @@ public class OrderItem implements Serializable{ //class conversion in byte seque
 	}
 
 	/*
-	 * constructor including the PurchaseOrder and Product objects to compose the id PK
+	 * constructor including the Purchase and Product objects to compose the id PK
 	 */
-	public OrderItem(PurchaseOrder purchaseOrder, Product product, Double discount, Integer amount, Double price) {
+	public OrderItem(Purchase purchase, Product product, Double discount, Integer amount, Double price) {
 		super();
-		id.setPurchaseOrder(purchaseOrder);
+		id.setPurchase(purchase);
 		id.setProduct(product);
 		this.discount = discount;
 		this.amount = amount;
 		this.price = price;
 	}
 	
-	public PurchaseOrder getPurchaseOrder() {
-		return id.getPurchaseOrder();
+	@JsonIgnore
+	public Purchase getPurchase() {
+		return id.getPurchase();
 	}
 	
 	public Product getProduct() {

@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fjdantas.cscmcourse.domain.enums.TypeClient;
 
@@ -41,17 +42,18 @@ public class Client implements Serializable{ //class conversion in byte sequence
 	 */	
 	@JsonManagedReference
 	@OneToMany(mappedBy="client")
-	private List<Address> address = new ArrayList<>();
+	private List<Address> addresses = new ArrayList<>();
 	
 	/*
 	 * using a character set to represent the weak entity Phone instantiated by HashSet 
 	 */
 	@ElementCollection
 	@CollectionTable(name="TELEPHONE")
-	private Set<String> telephone = new HashSet<>();
+	private Set<String> phones = new HashSet<>();
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="client")	
-	private List<PurchaseOrder> PurchaseOrders = new ArrayList<>();
+	private List<Purchase> purchases = new ArrayList<>();
 
 	public Client() {
 
@@ -94,7 +96,7 @@ public class Client implements Serializable{ //class conversion in byte sequence
 		return ssnOrEin;
 	}
 
-	public void setCpfOrCnpj(String ssnOrEin) {
+	public void setSsnOrEin(String ssnOrEin) {
 		this.ssnOrEin = ssnOrEin;
 	}
 	
@@ -107,28 +109,28 @@ public class Client implements Serializable{ //class conversion in byte sequence
 		this.type = type.getCode();
 	}
 
-	public List<Address> getAddress() {
-		return address;
+	public List<Address> getAddresses() {
+		return addresses;
 	}
 
-	public void setAddress(List<Address> address) {
-		this.address = address;
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
 	}
 
-	public Set<String> getTelephone() {
-		return telephone;
+	public Set<String> getPhones() {
+		return phones;
 	}
 
-	public void setTelephone(Set<String> telephone) {
-		this.telephone = telephone;
+	public void setPhones(Set<String> phones) {
+		this.phones = phones;
 	}
 
-	public List<PurchaseOrder> getOrders() {
-		return PurchaseOrders;
+	public List<Purchase> getPurchases() {
+		return purchases;
 	}
 
-	public void setOrders(List<PurchaseOrder> PurchaseOrders) {
-		this.PurchaseOrders = PurchaseOrders;
+	public void setPurchases(List<Purchase> purchases) {
+		this.purchases = purchases;
 	}	
 	
 	//method equals for comparing objects by content

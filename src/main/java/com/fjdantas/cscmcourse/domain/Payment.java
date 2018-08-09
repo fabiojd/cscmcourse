@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fjdantas.cscmcourse.domain.enums.StatusPayment;
 
 /*
@@ -28,23 +29,24 @@ public abstract class Payment implements Serializable{ //class conversion in byt
 	private Integer status;
 	
 	/*
-	 * mapping the PurchaseOrder attribute to the order_id field 
-	 * and defining the same PurchaseOrder id with the @MapsId annotation
+	 * mapping the Purchase attribute to the order_id field 
+	 * and defining the same Purchase id with the @MapsId annotation
 	 */
+	@JsonBackReference
 	@OneToOne
-	@JoinColumn(name="purchase_order_id")
+	@JoinColumn(name="purchase_id")
 	@MapsId
-	private PurchaseOrder PurchaseOrder;
+	private Purchase purchase;
 	
 	public Payment() {
 		
 	}
 
-	public Payment(Integer id, StatusPayment status, PurchaseOrder PurchaseOrder) {
+	public Payment(Integer id, StatusPayment status, Purchase purchase) {
 		super();
 		this.id = id;
 		this.status = status.getCode();
-		this.PurchaseOrder = PurchaseOrder;
+		this.purchase = purchase;
 	}
 
 	public Integer getId() {
@@ -63,12 +65,12 @@ public abstract class Payment implements Serializable{ //class conversion in byt
 		this.status = status.getCode();
 	}
 
-	public PurchaseOrder getOrder() {
-		return PurchaseOrder;
+	public Purchase getPurchase() {
+		return purchase;
 	}
 
-	public void setOrder(PurchaseOrder PurchaseOrder) {
-		this.PurchaseOrder = PurchaseOrder;
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
 	}
 
 	@Override

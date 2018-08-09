@@ -3,14 +3,14 @@ package com.fjdantas.cscmcourse.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.fjdantas.cscmcourse.domain.PurchaseOrder;
+import com.fjdantas.cscmcourse.domain.Purchase;
 
 /*
- * PurchaseOrderRepository Interface annotation by JpaRepository
+ * PurchaseRepository Interface annotation by JpaRepository
  * interface of operation of data access by object type with id attribute for repository layer
  */
 
 @Repository 
-public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Integer> { 
+public interface PurchaseRepository extends JpaRepository<Purchase, Integer> { 
 
 }
