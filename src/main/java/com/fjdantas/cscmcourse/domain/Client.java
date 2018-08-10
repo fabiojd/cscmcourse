@@ -14,8 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fjdantas.cscmcourse.domain.enums.TypeClient;
 
 @Entity
@@ -37,10 +36,10 @@ public class Client implements Serializable{ //class conversion in byte sequence
 	private Integer type; 
 	
 	/*
+	 * avoiding cyclic reference with @JsonIgnore annotation in the mapped attribute 
 	 * association between Address and Client when the objet Client can serialized your Addresses
 	 * controller of the cyclic reference
 	 */	
-	@JsonManagedReference
 	@OneToMany(mappedBy="client")
 	private List<Address> addresses = new ArrayList<>();
 	
@@ -51,7 +50,7 @@ public class Client implements Serializable{ //class conversion in byte sequence
 	@CollectionTable(name="TELEPHONE")
 	private Set<String> phones = new HashSet<>();
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="client")	
 	private List<Purchase> purchases = new ArrayList<>();
 

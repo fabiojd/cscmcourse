@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity //jpa entity class
 public class City implements Serializable{ //class conversion in byte sequence
 	//generating class version
@@ -26,7 +24,7 @@ public class City implements Serializable{ //class conversion in byte sequence
 	 * association between City and State when the objet City can serialized your State
 	 * controller of the cyclic reference
 	 */	
-	@JsonManagedReference
+	
 	@ManyToOne
 	@JoinColumn(name="state_id")
 	private State state;

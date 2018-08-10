@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity //jpa entity class
 public class State implements Serializable{ //class conversion in byte sequence
@@ -25,9 +25,9 @@ public class State implements Serializable{ //class conversion in byte sequence
 	
 	/*
 	 * association between City and State when the object City can serialized your State
-	 * not controller of the cyclic reference
+	 * not controller of the cyclic reference whith @JsonIgnore annotation
 	 */	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="state")
 	private List<City> cities = new ArrayList<>();
 	

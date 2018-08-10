@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fjdantas.cscmcourse.domain.enums.StatusPayment;
 
 /*
@@ -29,10 +29,11 @@ public abstract class Payment implements Serializable{ //class conversion in byt
 	private Integer status;
 	
 	/*
+	 * avoiding cyclic reference with @JsonIgnore annotation in the mapped attribute
 	 * mapping the Purchase attribute to the order_id field 
 	 * and defining the same Purchase id with the @MapsId annotation
 	 */
-	@JsonBackReference
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="purchase_id")
 	@MapsId

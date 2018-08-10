@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Purchase implements Serializable{ //class conversion in byte sequence
@@ -32,15 +31,14 @@ public class Purchase implements Serializable{ //class conversion in byte sequen
 	private Date instant;
 	
 	/*
-	 * treating cyclic reference with annotation @JsonManagedReference fetching the objects
+	 * avoiding cyclic reference with @JsonIgnore annotation in the mapped attribute
 	 * controlling the transient entity with CascadeType.ALL 
 	 * and indicating the mapping in the another table with mappedBy
 	 */
-	@JsonManagedReference
+	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="purchase")
 	private Payment payment;
 	
-	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="client_id")
 	private Client client;

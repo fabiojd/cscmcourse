@@ -15,7 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity //jpa entity class
@@ -31,13 +30,13 @@ public class Product implements Serializable{ //class conversion in byte sequenc
 	private Double price;
 	
 	/*
-	 * omitting the category list for products with annotation @JsonBackReference treating cyclic reference
+	 * avoiding cyclic reference with @JsonIgnore annotation in the mapped attribute
 	 * creating the category list mapping and informing which _
 	 * table will create the relationship between the product and category tables _
 	 * and passing the foreign keys of the related tables
 	 */
 	
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToMany
 	//PRODUCT_CATEGORY table that will make the many-to-many relationship between the product and category tables 
 	@JoinTable(name="PRODUCT_CATEGORY", 
